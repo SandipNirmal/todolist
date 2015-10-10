@@ -1,0 +1,13 @@
+<div class="tasks">
+    <div class="add-task">
+        <form name="taskForm">
+            <input class="add-task-input" ng-model="vm.task" placeholder="Add New Task" required='required' />
+            <button class="add-task-btn" ng-disabled="taskForm.$invalid" ng-click="vm.addTask()">Add</button>
+        </form>
+    </div>
+    <div class="task" ng-repeat="task in vm.tasks track by $id($index)">
+        <span class="task-value">{{task.task}}</span>
+        <span class="added-at">- {{task.timeAdded}}</span>
+        <button ng-click="vm.deleteTask(task._id)">X</button>
+    </div>
+</div>

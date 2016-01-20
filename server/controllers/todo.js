@@ -1,5 +1,4 @@
-// todo.js
-// ToDo controller
+// ToDoList controller
 // provides methods for handling todos
 
 var mongoose = require('mongoose'),
@@ -15,39 +14,39 @@ exports.createToDo = function (req, res, next) {
             res.json({
                 type: false,
                 data: "Error occured: " + err
-            })
+            });
         } else {
             res.json({
                 type: true,
                 data: ToDo
-            })
+            });
         }
-    })
+    });
 }
 
 exports.viewToDo = function (req, res) {
     ToDo
-.findById(new ObjectId(req.params.id), function (err, ToDo) {
-        if (err) {
-            res.status(500);
-            res.json({
-                type: false,
-                data: "Error occured: " + err
-            })
-        } else {
-            if (ToDo) {
-                res.json({
-                    type: true,
-                    data: ToDo
-                })
-            } else {
+        .findById(new ObjectId(req.params.id), function (err, ToDo) {
+            if (err) {
+                res.status(500);
                 res.json({
                     type: false,
-                    data: "ToDo: " + req.params.id + " not found"
-                })
+                    data: "Error occured: " + err
+                });
+            } else {
+                if (ToDo) {
+                    res.json({
+                        type: true,
+                        data: ToDo
+                    });
+                } else {
+                    res.json({
+                        type: false,
+                        data: "ToDo: " + req.params.id + " not found"
+                    });
+                }
             }
-        }
-    })
+        })
 }
 
 exports.listToDo = function (req, res) {
@@ -63,14 +62,15 @@ exports.listToDo = function (req, res) {
                 res.json({
                     //type: true,
                     data: ToDo
-                })
+                });
             }
         }
     });
 }
 
 exports.updateToDo = function (req, res, next) {
-    var updatedToDoModel = new ToDo(req.body);
+    var updatedToDoModel = new ToDo(req.body).toObject();
+    delete updatedToDoModel._id;
     ToDo.findByIdAndUpdate(new ObjectId(req.params.id),
         updatedToDoModel,
         function (err, ToDo) {
@@ -85,31 +85,31 @@ exports.updateToDo = function (req, res, next) {
                     res.json({
                         type: true,
                         data: ToDo
-                    })
+                    });
                 } else {
                     res.json({
                         type: false,
                         data: "ToDo: " + req.params.id + " not found"
-                    })
+                    });
                 }
             }
-        })
+        });
 }
 
 exports.deleteToDo = function (req, res, next) {
     ToDo.findByIdAndRemove(new Object(req.params.id),
-    	function (err, ToDo) {
-        if (err) {
-            res.status(500);
-            res.json({
-                type: false,
-                data: "Error occured: " + err
-            })
-        } else {
-            res.json({
-                type: true,
-                data: "ToDo: " + req.params.id + " deleted successfully"
-            })
-        }
-    })
-}
+        function (err, ToDo) {
+            if (err) {
+                res.status(500);
+                res.json({
+                    type: false,
+                    data: "Error occured: " + err
+                });
+            } else {
+                res.json({
+                    type: true,
+                    data: "ToDo: " + req.params.id + " deleted successfully"
+                });
+            }
+        });
+};

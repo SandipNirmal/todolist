@@ -19,10 +19,11 @@ NodeJS
 
 Once installed, install node package called mongoose for connecting node to mongo.
 
-run mongod
+run mongod in terminal (it will start mongoDB server)
 
-Then run todoservice from server directory
+Then run todoservice from server directory to start node API server
 
 node todoService.js
 
 Your node server should be up and running on port 3000.
+
